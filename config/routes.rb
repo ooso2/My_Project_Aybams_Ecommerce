@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get "checkout/show"
+  get "checkout/create"
+  get "cart/index"
+  get "cart/add_item"
+  get "cart/remove_item"
+  get "cart/update_quantity"
+  get "categories/show"
+  get "products/index"
+  get "products/show"
+  devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   get "home/index"
