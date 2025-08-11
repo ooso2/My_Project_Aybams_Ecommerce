@@ -126,6 +126,8 @@ rails db:seed
 # Start the development server
 rails server
 ...
+
+#Docker deployment
 # Build Docker image
 docker build -t aybams-app .
 
