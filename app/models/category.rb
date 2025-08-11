@@ -48,5 +48,7 @@ class Category < ApplicationRecord
     count = product_count
     descendants.each { |desc| count += desc.product_count }
     count
+  
+    
   end
 end

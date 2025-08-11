@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_08_132924) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_11_114514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,17 +87,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_08_132924) do
     t.string "shipping_postal_code"
     t.string "shipping_country"
     t.string "shipping_phone"
+    t.string "billing_country"
+    t.string "billing_phone"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "billing_first_name"
     t.string "billing_last_name"
     t.string "billing_address"
     t.string "billing_city"
     t.string "billing_province"
     t.string "billing_postal_code"
-    t.string "billing_country"
-    t.string "billing_phone"
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["order_date"], name: "index_orders_on_order_date"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
     t.index ["status"], name: "index_orders_on_status"
