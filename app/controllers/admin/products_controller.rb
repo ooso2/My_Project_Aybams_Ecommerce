@@ -2,10 +2,11 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @q = Product.ransack(params[:q])
-    @products = @q.result(distinct: true).includes(:category).page(params[:page]).per(20)
-  end
+def index
+  @products = Product.all
+  # Or add any scopes/filters you need:
+  # @products = Product.order(created_at: :desc)
+end
 
   def show; end
 
