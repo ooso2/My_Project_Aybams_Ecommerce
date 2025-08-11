@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Categories</h1>
+  <%= link_to "Add New Category", new_admin_category_path, class: "btn btn-primary" %>
+</div>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Parent Category</th>
+            <th>Products</th>
+            <th>Status</th>
+            <th>Sort Order</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @categories.each do |category| %>
+            <tr>
+              <td>
+                <%= "—" * category.ancestors.count if category.parent %>
+                <%= link_to category.name, admin_category_path(category), class: "text-decoration-none" %>
+              </td>
+              <td><%= category.parent&.name %></td>
+              <td><%= category.product_count %></td>
+              <td>
+                <span class="badge bg-<%= category.active? ? 'success' : 'secondary' %>">
+                  <%= category.active? ? 'Active' : 'Inactive' %>
+                </span>
+              </td>
+              <td><%= category.sort_order %></td>
+              <td>
+                <%= link_to "View", admin_category_path(category), class: "btn btn-sm btn-outline-primary" %>
+                <%= link_to "Edit", edit_admin_category_path(category), class: "btn btn-sm btn-outline-warning" %>
+                <% unless category.products.any? || category.children.any? %>
+                  <%= link_to "Delete", admin_category_path(category), method: :delete,
+                              confirm: "Are you sure?", class: "btn btn-sm btn-outline-danger" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

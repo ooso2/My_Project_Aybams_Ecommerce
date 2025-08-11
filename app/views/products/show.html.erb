@@ -1,0 +1,73 @@
+<div class="container my-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Products", products_path %></li>
+      <li class="breadcrumb-item active"><%= @product.name %></li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-md-6">
+      <% if @product.main_image %>
+        <%= image_tag @product.main_image, class: "img-fluid rounded" %>
+      <% else %>
+        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 400px;">
+          <i class="fas fa-image fa-5x text-muted"></i>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="col-md-6">
+      <h1><%= @product.name %></h1>
+      <p class="text-muted">SKU: <%= @product.sku %></p>
+      
+      <div class="mb-3">
+        <span class="h3 text-success">$<%= @product.current_price %></span>
+        <% if @product.featured? %>
+          <span class="badge bg-warning text-dark ms-2">Featured</span>
+        <% end %>
+      </div>
+      
+      <div class="mb-3">
+        <% if @product.stock_quantity > 0 %>
+          <span class="badge bg-success">In Stock (<%= @product.stock_quantity %> available)</span>
+        <% else %>
+          <span class="badge bg-danger">Out of Stock</span>
+        <% end %>
+      </div>
+      
+      <p class="lead"><%= @product.description %></p>
+      
+      <% if @product.stock_quantity > 0 %>
+        <%= form_with url: cart_add_path, method: :post, local: true, class: "mb-4" do |f| %>
+          <div class="row align-items-end">
+            <div class="col-auto">
+              <%= f.label :quantity, class: "form-label" %>
+              <%= f.number_field :quantity, value: 1, min: 1, max: @product.stock_quantity, class: "form-control" %>
+            </div>
+            <div class="col-auto">
+              <%= f.hidden_field :product_id, value: @product.id %>
+              <%= f.submit "Add to Cart", class: "btn btn-success btn-lg" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  
+  <% if @related_products.any? %>
+    <div class="row mt-5">
+      <div class="col-12">
+        <h3>Related Products</h3>
+        <div class="row">
+          <% @related_products.each do |product| %>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+              <%= render 'shared/product_card', product: product %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,170 @@
+<div class="pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">
+    <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+  </h1>
+  <p class="text-muted">Welcome to the AYBAMS administration panel</p>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-3 mb-3">
+    <div class="card bg-primary text-white h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="card-title">Total Users</h5>
+            <h2 class="display-6"><%= @total_users %></h2>
+          </div>
+          <div class="align-self-center">
+            <i class="fas fa-users fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3 mb-3">
+    <div class="card bg-success text-white h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="card-title">Admins</h5>
+            <h2 class="display-6"><%= @total_admins %></h2>
+          </div>
+          <div class="align-self-center">
+            <i class="fas fa-user-shield fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3 mb-3">
+    <div class="card bg-info text-white h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="card-title">Products</h5>
+            <h2 class="display-6"><%= @total_products %></h2>
+            <small>Coming Soon</small>
+          </div>
+          <div class="align-self-center">
+            <i class="fas fa-box fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3 mb-3">
+    <div class="card bg-warning text-white h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="card-title">Orders</h5>
+            <h2 class="display-6"><%= @total_orders %></h2>
+            <small>Coming Soon</small>
+          </div>
+          <div class="align-self-center">
+            <i class="fas fa-shopping-cart fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-users"></i> Recent Users
+        </h5>
+      </div>
+      <div class="card-body">
+        <% if @recent_users.any? %>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @recent_users.each do |user| %>
+                  <tr>
+                    <td><%= user.full_name %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                      <span class="badge bg-<%= user.admin? ? 'danger' : 'primary' %>">
+                        <%= user.role.humanize %>
+                      </span>
+                    </td>
+                    <td><%= user.created_at.strftime("%m/%d/%Y") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p class="text-muted">No users found.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-cog"></i> System Status
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <h6 class="small fw-bold">
+            User Authentication <span class="float-end text-success">Complete</span>
+          </h6>
+          <div class="progress">
+            <div class="progress-bar bg-success" style="width: 100%"></div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <h6 class="small fw-bold">
+            Admin Dashboard <span class="float-end text-success">Complete</span>
+          </h6>
+          <div class="progress">
+            <div class="progress-bar bg-success" style="width: 100%"></div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <h6 class="small fw-bold">
+            Product Management <span class="float-end text-warning">Pending</span>
+          </h6>
+          <div class="progress">
+            <div class="progress-bar bg-warning" style="width: 25%"></div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <h6 class="small fw-bold">
+            Order System <span class="float-end text-warning">Pending</span>
+          </h6>
+          <div class="progress">
+            <div class="progress-bar bg-warning" style="width: 10%"></div>
+          </div>
+        </div>
+        
+        <hr>
+        <div class="text-center">
+          <small class="text-muted">AYBAMS v1.0</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

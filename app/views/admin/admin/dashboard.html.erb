@@ -1,0 +1,144 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">
+    <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+  </h1>
+  <p class="text-muted">Welcome to the AYBAMS administration panel</p>
+</div>
+
+<div class="row mb-4">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-primary border-4 shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col me-2">
+            <div class="text-xs fw-bold text-primary text-uppercase mb-1">Total Users</div>
+            <div class="h5 mb-0 fw-bold text-gray-800"><%= @total_customers + User.admin.count %></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-users fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-start border-success border-4 shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col me-2">
+            <div class="text-xs fw-bold text-success text-uppercase mb-1">Admins</div>
+            <div class="h5 mb-0 fw-bold text-gray-800"><%= User.admin.count %></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-user-shield fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <%= link_to admin_products_path, class: "text-decoration-none" do %>
+      <div class="card border-start border-info border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs fw-bold text-info text-uppercase mb-1">Products</div>
+              <div class="h5 mb-0 fw-bold text-gray-800"><%= @total_products %></div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-box fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <%= link_to admin_orders_path, class: "text-decoration-none" do %>
+      <div class="card border-start border-warning border-4 shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col me-2">
+              <div class="text-xs fw-bold text-warning text-uppercase mb-1">Orders</div>
+              <div class="h5 mb-0 fw-bold text-gray-800"><%= @total_orders %></div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-users"></i> Recent Users
+        </h5>
+      </div>
+      <div class="card-body">
+        <% if @recent_users.any? %>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @recent_users.each do |user| %>
+                  <tr>
+                    <td><%= user.full_name %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                      <span class="badge bg-<%= user.admin? ? 'danger' : 'primary' %>">
+                        <%= user.role.humanize %>
+                      </span>
+                    </td>
+                    <td><%= user.created_at.strftime("%m/%d/%Y") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p class="text-muted">No users found.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0">Quick Actions</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <%= link_to admin_products_path, class: "btn btn-primary" do %>
+            <i class="fas fa-box"></i> Manage Products
+          <% end %>
+          <%= link_to admin_categories_path, class: "btn btn-success" do %>
+            <i class="fas fa-tags"></i> Manage Categories
+          <% end %>
+          <%= link_to admin_orders_path, class: "btn btn-warning" do %>
+            <i class="fas fa-shopping-bag"></i> View Orders
+          <% end %>
+          <%= link_to admin_users_path, class: "btn btn-info" do %>
+            <i class="fas fa-users"></i> Manage Users
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="container my-4">
+  <div class="alert alert-success">
+    <h4>Order Confirmed!</h4>
+    <p>Thank you for your order. Your order number is <strong><%= @order.order_number %></strong></p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h5>Order Details</h5>
+    </div>
+    <div class="card-body">
+      <% @order.order_items.each do |item| %>
+        <div class="d-flex justify-content-between mb-2">
+          <span><%= item.product.name %> × <%= item.quantity %></span>
+          <span>$<%= item.subtotal %></span>
+        </div>
+      <% end %>
+      
+      <hr>
+      <div class="d-flex justify-content-between fw-bold">
+        <span>Total:</span>
+        <span>$<%= @order.total_amount %></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Orders</h1>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <%= search_form_for @q, url: admin_orders_path, class: "d-flex" do |f| %>
+      <%= f.search_field :order_number_or_user_first_name_or_user_last_name_cont,
+                         placeholder: "Search orders...", class: "form-control me-2" %>
+      <%= f.submit "Search", class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-group" role="group">
+      <%= link_to "All", admin_orders_path, class: "btn #{'btn-primary' unless params[:status]} #{'btn-outline-primary' if params[:status]}" %>
+      <%= link_to "Pending", admin_orders_path(status: 'pending'), class: "btn #{'btn-primary' if params[:status] == 'pending'} #{'btn-outline-primary' unless params[:status] == 'pending'}" %>
+      <%= link_to "Processing", admin_orders_path(status: 'processing'), class: "btn #{'btn-primary' if params[:status] == 'processing'} #{'btn-outline-primary' unless params[:status] == 'processing'}" %>
+      <%= link_to "Shipped", admin_orders_path(status: 'shipped'), class: "btn #{'btn-primary' if params[:status] == 'shipped'} #{'btn-outline-primary' unless params[:status] == 'shipped'}" %>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td><%= link_to order.order_number, admin_order_path(order) %></td>
+              <td><%= order.user.full_name %></td>
+              <td><%= order.created_at.strftime("%m/%d/%Y %H:%M") %></td>
+              <td><%= order.total_items %></td>
+              <td>$<%= order.total_amount %></td>
+              <td>
+                <span class="badge bg-<%=
+                  case order.status
+                  when 'pending' then 'warning'
+                  when 'processing' then 'info'
+                  when 'shipped' then 'primary'
+                  when 'delivered' then 'success'
+                  when 'cancelled' then 'danger'
+                  else 'secondary'
+                  end
+                %>">
+                  <%= order.status.humanize %>
+                </span>
+              </td>
+              <td>
+                <% if order.payment %>
+                  <span class="badge bg-<%= order.payment.completed? ? 'success' : 'warning' %>">
+                    <%= order.payment.payment_status.humanize %>
+                  </span>
+                <% else %>
+                  <span class="badge bg-danger">No Payment</span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "View", admin_order_path(order), class: "btn btn-sm btn-outline-primary" %>
+                <%= link_to "Edit", edit_admin_order_path(order), class: "btn btn-sm btn-outline-warning" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+      <%= paginate @orders %>
+    </div>
+  </div>
+</div>

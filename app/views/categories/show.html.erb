@@ -1,0 +1,30 @@
+<div class="container my-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Categories", categories_path %></li>
+      <li class="breadcrumb-item active"><%= @category.name %></li>
+    </ol>
+  </nav>
+
+  <h1><%= @category.name %></h1>
+  <p class="lead"><%= @category.description %></p>
+
+  <div class="row">
+    <% if @products.any? %>
+      <% @products.each do |product| %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <%= render 'shared/product_card', product: product %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12">
+        <div class="text-center py-5">
+          <h4>No Products in This Category</h4>
+          <p>Products will be available soon.</p>
+          <%= link_to "Browse All Categories", categories_path, class: "btn btn-success" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

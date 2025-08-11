@@ -1,0 +1,132 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Order <%= @order.order_number %></h1>
+  <%= link_to "Edit Order", edit_admin_order_path(@order), class: "btn btn-warning" %>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5>Order Items</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @order.order_items.each do |item| %>
+                <tr>
+                  <td>
+                    <%= link_to item.product.name, admin_product_path(item.product) %>
+                  </td>
+                  <td><%= item.product.sku %></td>
+                  <td>$<%= item.price_at_purchase %></td>
+                  <td><%= item.quantity %></td>
+                  <td>$<%= item.subtotal %></td>
+                </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="4">Subtotal:</th>
+                <th>$<%= @order.subtotal %></th>
+              </tr>
+              <tr>
+                <th colspan="4">Tax:</th>
+                <th>$<%= @order.tax_amount %></th>
+              </tr>
+              <tr>
+                <th colspan="4">Shipping:</th>
+                <th>$<%= @order.shipping_cost %></th>
+              </tr>
+              <tr class="table-primary">
+                <th colspan="4">Total:</th>
+                <th>$<%= @order.total_amount %></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5>Order Details</h5>
+      </div>
+      <div class="card-body">
+        <p><strong>Status:</strong>
+          <span class="badge bg-<%=
+            case @order.status
+            when 'pending' then 'warning'
+            when 'processing' then 'info'
+            when 'shipped' then 'primary'
+            when 'delivered' then 'success'
+            when 'cancelled' then 'danger'
+            else 'secondary'
+            end
+          %>">
+            <%= @order.status.humanize %>
+          </span>
+        </p>
+        <p><strong>Order Date:</strong> <%= @order.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+        <p><strong>Customer:</strong> <%= link_to @order.user.full_name, "#" %></p>
+        <p><strong>Email:</strong> <%= @order.user.email %></p>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5>Shipping Address</h5>
+      </div>
+      <div class="card-body">
+        <address>
+          <%= simple_format(@order.shipping_address_full) %>
+        </address>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5>Billing Address</h5>
+      </div>
+      <div class="card-body">
+        <address>
+          <%= simple_format(@order.billing_address_full) %>
+        </address>
+      </div>
+    </div>
+
+    <% if @order.payment %>
+      <div class="card">
+        <div class="card-header">
+          <h5>Payment Information</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>Method:</strong> <%= @order.payment.payment_method.humanize %></p>
+          <p><strong>Status:</strong>
+            <span class="badge bg-<%= @order.payment.completed? ? 'success' : 'warning' %>">
+              <%= @order.payment.payment_status.humanize %>
+            </span>
+          </p>
+          <p><strong>Amount:</strong> $<%= @order.payment.amount %></p>
+          <% if @order.payment.transaction_id %>
+            <p><strong>Transaction ID:</strong> <%= @order.payment.transaction_id %></p>
+          <% end %>
+          <% if @order.payment.payment_date %>
+            <p><strong>Payment Date:</strong> <%= @order.payment.payment_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="container my-4">
+  <h1>Shop by Category</h1>
+  <p class="lead">Browse our sustainable product categories</p>
+
+  <div class="row">
+    <% @categories.each do |category| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-leaf fa-3x text-success mb-3"></i>
+            <h5 class="card-title"><%= category.name %></h5>
+            <p class="card-text"><%= category.description %></p>
+            <p class="text-muted">
+              <%= pluralize(category.products.where(is_active: true).count, 'product') %>
+            </p>
+            <%= link_to "Shop #{category.name}", category_path(category), class: "btn btn-success" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @categories.empty? %>
+    <div class="text-center py-5">
+      <h4>No Categories Available</h4>
+      <p>Categories will be available soon.</p>
+    </div>
+  <% end %>
+</div>

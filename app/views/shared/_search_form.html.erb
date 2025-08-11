@@ -1,0 +1,4 @@
+<%= form_with url: products_path, method: :get, local: true, class: "d-flex me-3" do |f| %>
+  <%= f.text_field :search, placeholder: "Search products...", class: "form-control me-2", value: params[:search] %>
+  <%= f.submit "Search", class: "btn btn-outline-light" %>
+<% end %>

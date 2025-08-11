@@ -1,0 +1,18 @@
+<div class="mb-3">
+  <%= form.label :images, "Product Images", class: "form-label" %>
+  <%= form.file_field :images, multiple: true, accept: "image/*", class: "form-control" %>
+  <div class="form-text">You can upload multiple images. Supported formats: JPG, PNG, GIF</div>
+</div>
+
+<% if @product.images.any? %>
+  <div class="mb-3">
+    <label class="form-label">Current Images:</label>
+    <div class="row">
+      <% @product.images.each do |image| %>
+        <div class="col-md-3 mb-2">
+          <%= image_tag image, class: "img-fluid rounded", style: "height: 100px; object-fit: cover;" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

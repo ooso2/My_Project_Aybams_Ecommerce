@@ -1,0 +1,73 @@
+<div class="container my-4">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h5>Filters</h5>
+        </div>
+        <div class="card-body">
+          <!-- Category Filter -->
+          <div class="mb-3">
+            <h6>Categories</h6>
+            <%= link_to "All Products", products_path, class: "d-block text-decoration-none #{'fw-bold' unless params[:category_id].present?}" %>
+            <% @categories.each do |category| %>
+              <div class="ms-2">
+                <%= link_to products_path(category_id: category.id), class: "text-decoration-none #{'fw-bold' if params[:category_id] == category.id.to_s}" do %>
+                  <%= category.name %> (<%= category.products.where(is_active: true).count %>)
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          
+          <!-- Status Filter -->
+          <div class="mb-3">
+            <h6>Product Status</h6>
+            <%= link_to "All Products", products_path, class: "d-block text-decoration-none #{'fw-bold' unless params[:filter].present?}" %>
+            <%= link_to "On Sale", products_path(filter: 'on_sale'), class: "d-block text-decoration-none #{'fw-bold' if params[:filter] == 'on_sale'}" %>
+            <%= link_to "New Products", products_path(filter: 'new'), class: "d-block text-decoration-none #{'fw-bold' if params[:filter] == 'new'}" %>
+            <%= link_to "Recently Updated", products_path(filter: 'recently_updated'), class: "d-block text-decoration-none #{'fw-bold' if params[:filter] == 'recently_updated'}" %>
+            <%= link_to "Featured", products_path(filter: 'featured'), class: "d-block text-decoration-none #{'fw-bold' if params[:filter] == 'featured'}" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+          Products
+          <% if @current_category %>
+            - <%= @current_category.name %>
+          <% end %>
+          <% if params[:search].present? %>
+            - Search: "<%= params[:search] %>"
+          <% end %>
+          <span class="text-muted">(<%= @products.count %>)</span>
+        </h2>
+      </div>
+      
+      <div class="row">
+        <% if @products.any? %>
+          <% @products.each do |product| %>
+            <div class="col-lg-4 col-md-6 mb-4">
+              <%= render 'shared/product_card', product: product %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="col-12">
+            <div class="text-center py-5">
+              <i class="fas fa-search fa-3x text-muted mb-3"></i>
+              <h4>No products found</h4>
+              <% if params[:search].present? %>
+                <p class="text-muted">No products match your search for "<%= params[:search] %>".</p>
+              <% else %>
+                <p class="text-muted">Try adjusting your search or filter criteria.</p>
+              <% end %>
+              <%= link_to "View All Products", products_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

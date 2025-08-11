@@ -1,0 +1,31 @@
+<nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+  <div class="position-sticky pt-3">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <%= link_to admin_root_path, class: "nav-link #{'active' if controller_name == 'admin' && action_name == 'dashboard'}" do %>
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to admin_products_path, class: "nav-link #{'active' if controller_name == 'products'}" do %>
+          <i class="fas fa-box"></i> Products
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to admin_categories_path, class: "nav-link #{'active' if controller_name == 'categories'}" do %>
+          <i class="fas fa-tags"></i> Categories
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to admin_orders_path, class: "nav-link #{'active' if controller_name == 'orders'}" do %>
+          <i class="fas fa-shopping-bag"></i> Orders
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to admin_users_path, class: "nav-link #{'active' if controller_name == 'users'}" do %>
+          <i class="fas fa-users"></i> Users
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</nav>

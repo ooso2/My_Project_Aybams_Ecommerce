@@ -1,0 +1,138 @@
+<div class="container my-4">
+  <h2>Checkout</h2>
+  
+  <% if @order.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h4>
+      <ul>
+        <% @order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= form_with model: @order, url: checkout_path, local: true, data: { turbo: false } do |f| %>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>Shipping Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.label :shipping_first_name, "First Name", class: "form-label" %>
+                <%= f.text_field :shipping_first_name, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-6">
+                <%= f.label :shipping_last_name, "Last Name", class: "form-label" %>
+                <%= f.text_field :shipping_last_name, class: "form-control", required: true %>
+              </div>
+            </div>
+            
+            <div class="mt-3">
+              <%= f.label :shipping_address, "Address", class: "form-label" %>
+              <%= f.text_area :shipping_address, class: "form-control", rows: 2, required: true %>
+            </div>
+            
+            <div class="row mt-3">
+              <div class="col-md-4">
+                <%= f.label :shipping_city, "City", class: "form-label" %>
+                <%= f.text_field :shipping_city, class: "form-control", required: true %>
+              </div>
+              <div class="col-md-4">
+                <%= f.label :shipping_province, "Province", class: "form-label" %>
+                <%= f.select :shipping_province, 
+                    options_for_select([
+                      ['Alberta', 'AB'], ['British Columbia', 'BC'], ['Manitoba', 'MB'],
+                      ['New Brunswick', 'NB'], ['Newfoundland and Labrador', 'NL'],
+                      ['Ontario', 'ON'], ['Quebec', 'QC'], ['Saskatchewan', 'SK']
+                    ], @order.shipping_province), 
+                    { prompt: 'Select Province' }, { class: "form-select", required: true } %>
+              </div>
+              <div class="col-md-4">
+                <%= f.label :shipping_postal_code, "Postal Code", class: "form-label" %>
+                <%= f.text_field :shipping_postal_code, class: "form-control", required: true %>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <%= f.label :shipping_phone, "Phone (Optional)", class: "form-label" %>
+              <%= f.text_field :shipping_phone, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>Payment Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i> 
+              This is a demo checkout. No real payment will be processed.
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" value="credit_card" checked>
+              <label class="form-check-label">Credit Card (Demo)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5>Order Summary</h5>
+          </div>
+          <div class="card-body">
+            <% @cart_items.each do |item| %>
+              <div class="d-flex justify-content-between mb-2">
+                <span><%= item[:product].name %> × <%= item[:quantity] %></span>
+                <span>$<%= sprintf("%.2f", item[:subtotal]) %></span>
+              </div>
+            <% end %>
+            
+            <hr>
+            
+            <% subtotal = @cart_items.sum { |item| item[:subtotal] } %>
+            <% tax = subtotal * 0.13 %>
+            <% total = subtotal + tax %>
+            
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span>$<%= sprintf("%.2f", subtotal) %></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Tax (HST 13%):</span>
+              <span>$<%= sprintf("%.2f", tax) %></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping:</span>
+              <span>FREE</span>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between fw-bold h5">
+              <span>Total:</span>
+              <span>$<%= sprintf("%.2f", total) %></span>
+            </div>
+            
+            <div class="d-grid mt-3">
+              <%= f.submit "Place Order", class: "btn btn-success btn-lg", 
+                          data: { disable_with: "Processing..." } %>
+            </div>
+            
+            <div class="text-center mt-3">
+              <small class="text-muted">
+                <i class="fas fa-lock"></i> Secure checkout
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

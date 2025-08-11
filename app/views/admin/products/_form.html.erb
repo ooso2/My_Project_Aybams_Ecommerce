@@ -1,0 +1,21 @@
+<%= form_with model: [:admin, @product], local: true, multipart: true do |f| %>
+  <%= render 'shared/form_errors', object: @product %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, class: "form-control", rows: 4 %>
+  </div>
+
+  <%= render 'admin/products/image_section', form: f %>
+  <%= render 'admin/products/pricing_section', form: f %>
+
+  <div class="mb-3">
+    <%= f.submit class: "btn btn-success" %>
+    <%= link_to "Cancel", admin_products_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
