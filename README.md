@@ -126,4 +126,13 @@ rails db:seed
 # Start the development server
 rails server
 ...
+# Build Docker image
+docker build -t aybams-app .
+
+# Run Docker container
+docker run -d -p 3000:3000 --env-file .env aybams-app
+
+# For production deployment with docker-compose
+docker-compose -f docker-compose.prod.yml up --build
+....
 # Aybams_Project_App
