@@ -27,7 +27,10 @@ class Admin::CategoriesController < Admin::BaseController
   private
 
   def set_category
-    @category = Category.find_by(id: params[:id]) || Category.find_by(slug: params[:id])
+    @category = Category.find_by(id: params[:id]) || 
+                Category.find_by(slug: params[:id])
+    
+    raise ActiveRecord::RecordNotFound unless @category
   end
 
   def category_params

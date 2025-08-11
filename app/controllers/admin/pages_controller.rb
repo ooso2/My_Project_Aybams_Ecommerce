@@ -1,4 +1,4 @@
-class Admin::PagesController < AdminController
+class Admin::ProductsController < Admin::BaseController
   before_action :set_page, only: [:show, :edit, :update, :destroy]
 
   def index

@@ -1,10 +1,9 @@
-class Admin::OrdersController < Admin::AdminController
-
+class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: [:show, :edit, :update]
 
   def index
     @q = Order.ransack(params[:q])
-    @users = @q.result(distinct: true).recent.page(params[:page]).per(20)
+    @orders = @q.result(distinct: true).recent.page(params[:page]).per(20)
   end
 
   def show
@@ -15,7 +14,6 @@ class Admin::OrdersController < Admin::AdminController
 
   def update
     if @order.update(order_params)
-      # Handle status transitions
       case params[:order][:status]
       when 'processing'
         @order.process! if @order.may_process?

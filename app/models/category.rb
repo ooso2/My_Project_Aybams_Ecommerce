@@ -48,7 +48,14 @@ class Category < ApplicationRecord
     count = product_count
     descendants.each { |desc| count += desc.product_count }
     count
-  
-    
+  end
+
+  # Add slug generation callback
+  before_validation :generate_slug, if: :name_changed?
+
+  private
+
+  def generate_slug
+    self.slug = name.parameterize
   end
 end

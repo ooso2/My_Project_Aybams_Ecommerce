@@ -1,13 +1,13 @@
+# app/controllers/admin/products_controller.rb
 class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   def index
     @q = Product.ransack(params[:q])
-    @products = Product.includes(:category).page(params[:page]).per(20)
+    @products = @q.result(distinct: true).includes(:category).page(params[:page]).per(20)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @product = Product.new
@@ -51,9 +51,11 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :short_description, :current_price,
-                                   :compare_at_price, :stock_quantity, :category_id, :sku,
-                                   :weight, :dimensions, :is_active, :featured, :on_sale,
-                                   :material, :origin_country, images: [])
+    params.require(:product).permit(
+      :name, :description, :short_description, :current_price,
+      :compare_at_price, :stock_quantity, :category_id, :sku,
+      :weight, :dimensions, :is_active, :featured, :on_sale,
+      :material, :origin_country, images: []
+    )
   end
 end
