@@ -37,43 +37,49 @@
           </tr>
         </thead>
         <tbody>
-          <% @orders.each do |order| %>
-            <tr>
-              <td><%= link_to order.order_number, admin_order_path(order) %></td>
-              <td><%= order.user.full_name %></td>
-              <td><%= order.created_at.strftime("%m/%d/%Y %H:%M") %></td>
-              <td><%= order.total_items %></td>
-              <td>$<%= order.total_amount %></td>
-              <td>
-                <span class="badge bg-<%=
-                  case order.status
-                  when 'pending' then 'warning'
-                  when 'processing' then 'info'
-                  when 'shipped' then 'primary'
-                  when 'delivered' then 'success'
-                  when 'cancelled' then 'danger'
-                  else 'secondary'
-                  end
-                %>">
-                  <%= order.status.humanize %>
-                </span>
-              </td>
-              <td>
-                <% if order.payment %>
-                  <span class="badge bg-<%= order.payment.completed? ? 'success' : 'warning' %>">
-                    <%= order.payment.payment_status.humanize %>
-                  </span>
-                <% else %>
-                  <span class="badge bg-danger">No Payment</span>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to "View", admin_order_path(order), class: "btn btn-sm btn-outline-primary" %>
-                <%= link_to "Edit", edit_admin_order_path(order), class: "btn btn-sm btn-outline-warning" %>
-              </td>
-            </tr>
+  <% if @orders.present? %>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= link_to order.order_number, admin_order_path(order) %></td>
+        <td><%= order.user&.full_name || 'N/A' %></td>
+        <td><%= order.created_at.strftime("%m/%d/%Y %H:%M") %></td>
+        <td><%= order.total_items || 0 %></td>
+        <td>$<%= order.total_amount || 0 %></td>
+        <td>
+          <span class="badge bg-<%= 
+            case order.status
+            when 'pending' then 'warning'
+            when 'processing' then 'info'
+            when 'shipped' then 'primary'
+            when 'delivered' then 'success'
+            when 'cancelled' then 'danger'
+            else 'secondary'
+            end
+          %>">
+            <%= order.status.humanize %>
+          </span>
+        </td>
+        <td>
+          <% if order.payment %>
+            <span class="badge bg-<%= order.payment.completed? ? 'success' : 'warning' %>">
+              <%= order.payment.payment_status&.humanize || 'Unknown' %>
+            </span>
+          <% else %>
+            <span class="badge bg-danger">No Payment</span>
           <% end %>
-        </tbody>
+        </td>
+        <td>
+          <%= link_to "View", admin_order_path(order), class: "btn btn-sm btn-outline-primary" %>
+          <%= link_to "Edit", edit_admin_order_path(order), class: "btn btn-sm btn-outline-warning" %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="8" class="text-center">No orders found.</td>
+    </tr>
+  <% end %>
+</tbody>
       </table>
     </div>
 
