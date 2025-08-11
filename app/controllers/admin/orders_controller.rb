@@ -1,9 +1,10 @@
-class Admin::OrdersController < AdminController
+class Admin::OrdersController < Admin::AdminController
+
   before_action :set_order, only: [:show, :edit, :update]
 
   def index
-    @q = Order.includes(:user, :order_items, :products, :payment).ransack(params[:q])
-    @orders = @q.result(distinct: true).recent.page(params[:page]).per(20)
+    @q = Order.ransack(params[:q])
+    @users = @q.result(distinct: true).recent.page(params[:page]).per(20)
   end
 
   def show
